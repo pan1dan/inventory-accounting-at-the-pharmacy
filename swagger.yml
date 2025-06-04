@@ -1,0 +1,541 @@
+openapi: 3.0.0
+info:
+  title: OpenApi спецификация учёта для аптек
+  version: 0.0.1
+servers:
+  - url: http://localhost:8080/inventory-accounting-at-the-pharmacy/api
+    description: Dev server
+paths:
+  /employees:
+    get:
+      summary: Метод получения сотрудников
+      tags:
+        - Employees
+      operationId: getAllEmployees
+      responses:
+        '200':
+          description: Успешный ответ со списком сотрудников
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Employees"
+        'default':
+          description: Всё нестандартное
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    post:
+      summary: Метод добавления сотрудника
+      tags:
+        - Employees
+      operationId: addEmployee
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/NewEmployee"
+      responses:
+        '200':
+          description: Успешный ответ с новым сотрудником
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Employee"
+        'default':
+          description: Всё нестандартное
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /employees/{employee_id}:
+    get:
+      summary: Метод получения сотрудника по id
+      tags:
+        - Employees
+      operationId: getEmployeeById
+      parameters:
+        - name: employee_id
+          in: path
+          required: true
+          description: Id сотрудника
+          schema:
+            type: integer
+          example: 1
+      responses:
+        '200':
+          description: Успешный ответ с сотрудником
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Employee"
+        'default':
+          description: Всё нестандартное
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    delete:
+      summary: Удаление сотрудника
+      tags:
+        - Employees
+      operationId: deleteEmployee
+      parameters:
+        - name: employee_id
+          in: path
+          required: true
+          description: Id сотрудника
+          schema:
+            type: integer
+          example: 1
+      responses:
+        '200':
+          description: Успешное удаление сотрудника
+          content:
+            application/json: {}
+        'default':
+          description: Всё нестандартное
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /categories:
+    get:
+      summary: Метод получения категорий
+      tags:
+        - Categories
+      operationId: getAllCategories
+      responses:
+        '200':
+          description: Успешный ответ со списком категорий
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Categories"
+        'default':
+          description: Всё нестандартное
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    post:
+      summary: Метод добавления категории
+      tags:
+        - Categories
+      operationId: addCategory
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/NewEmployee"
+      responses:
+        '200':
+          description: Успешный ответ с новой категорией
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NewCategory"
+        'default':
+          description: Всё нестандартное
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /categories/{category_id}:
+    get:
+      summary: Метод получения категории по id
+      tags:
+        - Categories
+      operationId: getCategoryById
+      parameters:
+        - name: category_id
+          in: path
+          required: true
+          description: Id категории
+          schema:
+            type: integer
+          example: 1
+      responses:
+        '200':
+          description: Успешный ответ с категорией
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Category"
+        'default':
+          description: Всё нестандартное
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    delete:
+      summary: Удаление категории
+      tags:
+        - Categories
+      operationId: deleteCategory
+      parameters:
+        - name: category_id
+          in: path
+          required: true
+          description: Id категории
+          schema:
+            type: integer
+          example: 1
+      responses:
+        '200':
+          description: Успешное удаление категории
+          content:
+            application/json: {}
+        'default':
+          description: Всё нестандартное
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  /sales:
+    post:
+      summary: Метод добавления продажи
+      tags:
+        - Sales
+      operationId: addSale
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/NewSale"
+      responses:
+        '200':
+          description: Успешный ответ с новой продажей
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Sale"
+        'default':
+          description: Всё нестандартное
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    get:
+      summary: Метод получения продаж
+      tags:
+        - Sales
+      operationId: getSales
+      responses:
+        '200':
+          description: Успешный ответ со списком продаж
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Sales"
+        'default':
+          description: Всё нестандартное
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /items:
+    get:
+      summary: Метод получения вещей
+      tags:
+        - Items
+      operationId: getItems
+      responses:
+        '200':
+          description: Успешный ответ со списком вещей
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Items"
+        'default':
+          description: Всё нестандартное
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  /items/{item_id}:
+    get:
+      summary: Метод получения вещи по id
+      tags:
+        - Items
+      operationId: getItemById
+      parameters:
+        - name: item_id
+          in: path
+          required: true
+          description: Id вещи
+          schema:
+            type: integer
+          example: 1
+      responses:
+        '200':
+          description: Успешный ответ с предетом
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Item"
+        'default':
+          description: Всё нестандартное
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    delete:
+      summary: Удаление вещи
+      tags:
+        - Items
+      operationId: deleteItem
+      parameters:
+        - name: item_id
+          in: path
+          required: true
+          description: Id вещи
+          schema:
+            type: integer
+          example: 1
+      responses:
+        '200':
+          description: Успешное удаление вези
+          content:
+            application/json: {}
+        'default':
+          description: Всё нестандартное
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  /supplies:
+    get:
+
+
+
+
+
+
+
+components:
+  schemas:
+
+    Employee:
+      type: object
+      required:
+        - employee_id
+        - name
+        - position
+      properties:
+        employee_id:
+          type: integer
+          example: 1
+        name:
+          type: string
+          example: Alex
+        position:
+          type: string
+          example: 1
+
+    Employees:
+      type: array
+      items:
+        $ref: "#/components/schemas/Employee"
+    Error:
+      type: object
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: integer
+        message:
+          type: string
+
+    NewEmployee:
+      type: object
+      required:
+        - name
+        - position
+      properties:
+        name:
+          type: string
+          example: Alex
+        position:
+          type: string
+          example: 1
+
+    Category:
+      type: object
+      required:
+        - category_id
+        - name
+      properties:
+        category_id:
+          type: integer
+          example: 1
+        name:
+          type: string
+          example: Уход за лицом
+
+    Categories:
+      type: array
+      items:
+        $ref: "#/components/schemas/Category"
+
+    NewCategory:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
+          example: Уход за лицом
+
+    Sale:
+      type: object
+      required:
+        - sale_id
+        - sales_at
+        - saleableItem
+        - total_price
+        - payment_method
+        - seller_id
+      properties:
+        sale_id:
+          type: integer
+          example: 1
+        sales_at:
+          type: string
+          format: 2025-05-05T21:29:00+01
+        saleableItems:
+          type: array
+          items:
+            $ref: "#/components/schemas/SaleableItem"
+        total_price:
+          type: integer
+          example: 100
+        payment_method:
+          type: string
+          enum:
+            - cash
+            - card
+        seller_id:
+          type: integer
+          example: 1
+
+    Sales:
+      type: array
+      items:
+        $ref: "#/components/schemas/Sale"
+
+    NewSale:
+      type: object
+      required:
+        - sales_at
+        - saleableItem
+        - payment_method
+        - seller_id
+      properties:
+        sales_at:
+          type: string
+          format: 2025-05-05T21:29:00+01
+        seller_id:
+          type: integer
+          example: 1
+        payment_method:
+          type: string
+          enum:
+            - cash
+            - card
+        saleableItems:
+          type: array
+          items:
+            $ref: "#/components/schemas/SaleableItem"
+
+    Item:
+      type: object
+      required:
+        - item_id
+        - name
+        - description
+        - category_id
+        - expiry_date
+      properties:
+        item_id:
+          type: integer
+          example: 1
+        name:
+          type: string
+          example: Ибупрофен
+        description:
+          type: string
+          example: Таблетка
+        categoty_id:
+          type: integer
+          example: 1
+        expiry_date:
+          type: string
+          format: 2025-05-05
+
+    Items:
+      type: array
+      items:
+        $ref: "#/components/schemas/Item"
+
+    NewItem:
+      type: object
+      required:
+        - name
+        - description
+        - category_id
+        - expiry_date
+      properties:
+        item_id:
+          type: integer
+          example: 1
+        name:
+          type: string
+          example: Ибупрофен
+        description:
+          type: string
+          example: Таблетка
+        categoty_id:
+          type: integer
+          example: 1
+        expiry_date:
+          type: string
+          format: 2025-05-05
+
+    SaleableItem:
+      type: object
+      required:
+        - item_id
+        - item_count
+      properties:
+        item_id:
+          type: integer
+          example: 1
+        item_count:
+          type: integer
+          example: 3
+
+    Supply:
+      type: object
+      required:
+        - supply_id
+        - newItems
+        - purchase_price_per_unit
+      properties:
+        supply_id:
+          type: integer
+          example: 1
+        newItems:
+          type: array
+          items:
+            $ref: "#/components/schemas/NewItem"
+        purchase_price_per_unit:
+          type: integer
+          example: 1
