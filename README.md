@@ -1,5 +1,8 @@
-Приложение для управления аптекой.<br>
-Стек:
+#Приложение для управления аптекой.<br>
+
+##Стек:
+- Java, Spring Boot
+- Swagger, OpenAPI
 
 ## API Documentation
 
