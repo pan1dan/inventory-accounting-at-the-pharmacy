@@ -12,6 +12,25 @@ paths:
       tags:
         - Employees
       operationId: getAllEmployees
+      parameters:
+        - name: from
+          in: query
+          required: false
+          description: Начальная позиция (смещение)
+          schema:
+            type: integer
+            format: int32
+            default: 0
+            minimum: 0
+        - name: size
+          in: query
+          required: false
+          description: Количество элементов на странице
+          schema:
+            type: integer
+            format: int32
+            default: 5
+            minimum: 1
       responses:
         '200':
           description: Успешный ответ со списком сотрудников
@@ -106,6 +125,25 @@ paths:
       tags:
         - Categories
       operationId: getAllCategories
+      parameters:
+        - name: from
+          in: query
+          required: false
+          description: Начальная позиция (смещение)
+          schema:
+            type: integer
+            format: int32
+            default: 0
+            minimum: 0
+        - name: size
+          in: query
+          required: false
+          description: Количество элементов на странице
+          schema:
+            type: integer
+            format: int32
+            default: 5
+            minimum: 1
       responses:
         '200':
           description: Успешный ответ со списком категорий
@@ -129,14 +167,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/NewEmployee"
+              $ref: "#/components/schemas/NewCategory"
       responses:
         '200':
           description: Успешный ответ с новой категорией
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/NewCategory"
+                $ref: "#/components/schemas/Category"
         'default':
           description: Всё нестандартное
           content:
@@ -225,6 +263,25 @@ paths:
       tags:
         - Sales
       operationId: getSales
+      parameters:
+        - name: from
+          in: query
+          required: false
+          description: Начальная позиция (смещение)
+          schema:
+            type: integer
+            format: int32
+            default: 0
+            minimum: 0
+        - name: size
+          in: query
+          required: false
+          description: Количество элементов на странице
+          schema:
+            type: integer
+            format: int32
+            default: 5
+            minimum: 1
       responses:
         '200':
           description: Успешный ответ со списком продаж
@@ -244,6 +301,25 @@ paths:
       tags:
         - Items
       operationId: getItems
+      parameters:
+        - name: from
+          in: query
+          required: false
+          description: Начальная позиция (смещение)
+          schema:
+            type: integer
+            format: int32
+            default: 0
+            minimum: 0
+        - name: size
+          in: query
+          required: false
+          description: Количество элементов на странице
+          schema:
+            type: integer
+            format: int32
+            default: 5
+            minimum: 1
       responses:
         '200':
           description: Успешный ответ со списком вещей
@@ -286,10 +362,10 @@ paths:
               schema:
                 $ref: "#/components/schemas/Error"
     delete:
-      summary: Удаление вещи
+      summary: Удаление вещи по id
       tags:
         - Items
-      operationId: deleteItem
+      operationId: deleteItemById
       parameters:
         - name: item_id
           in: path
@@ -312,9 +388,117 @@ paths:
 
   /supplies:
     get:
-
-
-
+      summary: Метод получения списка поставок
+      tags:
+        - Supplies
+      operationId: getSupplies
+      parameters:
+        - name: from
+          in: query
+          required: false
+          description: Начальная позиция (смещение)
+          schema:
+            type: integer
+            format: int32
+            default: 0
+            minimum: 0
+        - name: size
+          in: query
+          required: false
+          description: Количество элементов на странице
+          schema:
+            type: integer
+            format: int32
+            default: 5
+            minimum: 1
+      responses:
+        '200':
+          description: Успешный ответ со списком поставок
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Supplies"
+        'default':
+          description: Всё нестандартное
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    post:
+      summary: Метод добавления поставки
+      tags:
+        - Supplies
+      operationId: addSupply
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/NewSupply"
+      responses:
+        '200':
+          description: Успешный ответ с новой поставкой
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Supply"
+        'default':
+          description: Всё нестандартное
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /supplies/{supply_id}:
+    get:
+      summary: Метод получения поставки по id
+      tags:
+        - Supplies
+      operationId: getSupplyById
+      parameters:
+        - name: supply_id
+          in: path
+          required: true
+          description: Id поставки
+          schema:
+            type: integer
+          example: 1
+      responses:
+        '200':
+          description: Успешный ответ с поставкой
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Supply"
+        'default':
+          description: Всё нестандартное
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    delete:
+      summary: Удаление поставки по id
+      tags:
+        - Supplies
+      operationId: deleteSupplyById
+      parameters:
+        - name: supply_id
+          in: path
+          required: true
+          description: Id поставки
+          schema:
+            type: integer
+          example: 1
+      responses:
+        '200':
+          description: Успешное удаление вези
+          content:
+            application/json: {}
+        'default':
+          description: Всё нестандартное
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
 
 
 
@@ -463,6 +647,8 @@ components:
         - description
         - category_id
         - expiry_date
+        - purchase_price_per_unit
+        - sale_price_per_unit
       properties:
         item_id:
           type: integer
@@ -479,35 +665,70 @@ components:
         expiry_date:
           type: string
           format: 2025-05-05
+        purchase_price_per_unit:
+          type: integer
+          example: 1000
+        sale_price_per_unit:
+          type: integer
+          example: 1100
+    SupplyItem:
+      type: object
+      required:
+        - item_id
+        - name
+        - description
+        - category_name
+        - expiry_date
+        - purchase_price_per_unit
+        - sale_price_per_unit
+      properties:
+        item_id:
+          type: integer
+          example: 1
+        name:
+          type: string
+          example: Ибупрофен
+        description:
+          type: string
+          example: Таблетка
+        categoty_name:
+          type: string
+          example: 1
+        expiry_date:
+          type: string
+          format: 2025-05-05
+        purchase_price_per_unit:
+          type: integer
+          example: 1000
 
     Items:
       type: array
       items:
         $ref: "#/components/schemas/Item"
 
-    NewItem:
-      type: object
-      required:
-        - name
-        - description
-        - category_id
-        - expiry_date
-      properties:
-        item_id:
-          type: integer
-          example: 1
-        name:
-          type: string
-          example: Ибупрофен
-        description:
-          type: string
-          example: Таблетка
-        categoty_id:
-          type: integer
-          example: 1
-        expiry_date:
-          type: string
-          format: 2025-05-05
+          # NewItem:
+          #   type: object
+          #   required:
+          #     - name
+          #     - description
+          #     - category_id
+          #     - expiry_date
+          #   properties:
+          #     item_id:
+          #       type: integer
+          #       example: 1
+          #     name:
+          #       type: string
+          #       example: Ибупрофен
+          #     description:
+          #       type: string
+          #       example: Таблетка
+          #     categoty_id:
+          #       type: integer
+          #       example: 1
+          #     expiry_date:
+          #       type: string
+          #       format: 2025-05-05
 
     SaleableItem:
       type: object
@@ -526,16 +747,41 @@ components:
       type: object
       required:
         - supply_id
-        - newItems
-        - purchase_price_per_unit
+        - items
+        - company_name
+        - delivered_at
       properties:
         supply_id:
           type: integer
           example: 1
-        newItems:
+        items:
           type: array
           items:
-            $ref: "#/components/schemas/NewItem"
-        purchase_price_per_unit:
-          type: integer
-          example: 1
+            $ref: "#/components/schemas/SupplyItem"
+        company_name:
+          type: string
+          example: Р-Фарм
+        delivered_at:
+          type: string
+          format: 2025-05-05T21:29:00+01
+    Supplies:
+      type: array
+      items:
+        $ref: "#/components/schemas/Supply"
+    NewSupply:
+      type: object
+      required:
+        - items
+        - company_name
+        - delivered_at
+      properties:
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/SupplyItem"
+        company_name:
+          type: string
+          example: Р-Фарм
+        delivered_at:
+          type: string
+          format: 2025-05-05T21:29:00+01
